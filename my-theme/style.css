@@ -1,0 +1,14 @@
+/*
+* Theme Name:   my-theme
+*/
+@import url("styles/header.css");
+
+:root {
+  background-color: rgb(255, 255, 255);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
