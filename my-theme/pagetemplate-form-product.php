@@ -5,6 +5,7 @@
 
 get_header();
 
+echo __("This is a form page:", "mt"); //loco translate test
 if (have_posts()):
     while (have_posts()):
 
