@@ -1,0 +1,30 @@
+.wc-block-grid__products {
+  background-color: lightgray;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+}
+
+.wc-block-grid__product {
+  overflow: hidden;
+  margin: 100px;
+}
+.wc-block-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.wp-block-woocommerce-cart {
+  background-color: lightgray;
+  border-radius: 10px;
+  padding: 10px;
+  color: rgb(0, 0, 0);
+}
+.wc-block-components-button__text {
+  background-color: darkblue;
+  padding: 5px;
+  color: white;
+  border-radius: 10px;
+}

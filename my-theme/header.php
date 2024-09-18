@@ -1,14 +1,16 @@
-<?php
-wp_head();
-?>
-<html>
+<!doctype html>
+<html <?php language_attributes(); ?>>
 
 
-<body>
+<head>
+    <?php wp_head(); ?>
+</head>
+
+<body <?php body_class(); ?>>
+    <?php wp_body_open(); ?>
+
     <header>
-        <nav class="nav_bar">
-            <a href="/">Shop</a>
-        </nav>
+        <h2>Header</h2>
     </header>
 
     <main>

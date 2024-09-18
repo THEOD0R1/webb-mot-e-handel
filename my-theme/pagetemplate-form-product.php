@@ -1,9 +1,12 @@
 <?php
 /*
- * Template Name:   product-form
+ * Template Name:   Create car collection
  */
 
 get_header();
+?>
+
+<?php
 
 echo __("This is a form page:", "mt"); //loco translate test
 if (have_posts()):

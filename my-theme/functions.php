@@ -1,22 +1,6 @@
 <?php
 
 
-function sayHello($content)
-{
-	$hasRun = false;
-
-	if (!$hasRun) {
-		$hasRun = true;
-
-		$content .= "<p>Hello there</p>";
-
-
-	}
-
-	return $content;
-}
-
-add_filter("the_content", "sayHello");
 
 
 function mt_register_collection_post_type()
