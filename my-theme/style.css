@@ -27,8 +27,18 @@ main {
   width: 90%;
   align-items: center;
 }
+.wc-block-components-button {
+  background-color: darkblue;
+  color: white;
+  border-radius: 10px;
+  font-size: larger;
+  border: solid rgb(0, 0, 0) 2px;
+  text-decoration: none;
+}
+.wc-block-components-product-name {
+  color: rgb(0, 0, 0);
+}
 @media screen and (max-width: 800px) {
   body {
-    background-color: blue;
   }
 }

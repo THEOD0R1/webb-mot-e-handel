@@ -1,10 +1,10 @@
 .wc-block-grid__products {
-  background-color: lightgray;
+  background-color: rgb(182, 0, 0);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  width: 90%;
+  width: 100%;
 }
 
 .wc-block-grid__product {
@@ -17,14 +17,11 @@
   align-items: center;
 }
 .wp-block-woocommerce-cart {
-  background-color: lightgray;
-  border-radius: 10px;
-  padding: 10px;
+  background-color: rgba(245, 245, 245);
+  /* padding: 10px; */
+  border-radius: 5px;
   color: rgb(0, 0, 0);
-}
-.wc-block-components-button__text {
-  background-color: darkblue;
-  padding: 5px;
-  color: white;
-  border-radius: 10px;
+  width: 100%;
+  /* border: solid hsla(0, 0%, 7%, 0.11) 1px; */
+  font-size: large;
 }

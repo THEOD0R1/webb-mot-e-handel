@@ -32,10 +32,13 @@ function mt_output_form()
 	<form method="POST">
 		<input type="hidden" name="post_select_product" value="product_form">
 		<label for="post_form_title">Title</label>
+		<input type="text" name="post_form_title" id="post_form_title" placeholder="Title">
+
 		<?php
 		if (!is_user_logged_in() || true) { //Use || true or && false only in testing or 
 			?>
-			<input type="text" name="post_form_title" id="post_form_title" placeholder="Title">
+			<input type="text" name="post_form_email" id="post_form_email" placeholder="Email">
+
 			<label for="post_form_name">Full name</label>
 			<input type="text" name="post_form_name" id="post_form_name" placeholder="Full name">
 			<label for="post_form_email">Email</label>
@@ -43,7 +46,6 @@ function mt_output_form()
 		}
 		?>
 
-		<input type="text" name="post_form_email" id="post_form_email" placeholder="Email">
 
 		<section class="collection__product__card">
 			<?php
@@ -55,23 +57,31 @@ function mt_output_form()
 				<article>
 
 					<label for="<?php echo $id ?>">
-						<?php echo $title ?>
+						<?php echo esc_html($title); ?>
 					</label>
 					<input type="checkbox" name="product_id[]" value="<?php echo $id ?>" id="<?php echo $id ?>">
-					<?php echo esc_html($id) ?>
 				</article>
 
+
+
 				<?php
+
 			}
+
 
 			?>
 		</section>
 		<label for="post_form_content">Content</label>
 		<textarea name="post_form_content" id="post_form_content"></textarea>
 
+		<?php do_action("mp_nonce_form") ?>
+
 		<input type="submit" value="Add Collection">
 
-		<?php wp_nonce_field("new_product_collection") ?>
+		<?php
+
+		//  wp_nonce_field("new_product_collection") 
+		?>
 	</form>
 	<?php
 }

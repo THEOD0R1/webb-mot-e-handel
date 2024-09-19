@@ -23,9 +23,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (isset($_POST["post_select_product"]) && isset($_POST["product_id"])) {
 
-        var_dump($_POST["product_id"]);
-
         do_action("save_new_collection");
+
+        do_action("mp_valid_nonce", );
+
+
+        if (!is_user_logged_in() && isset($_POST["post_form_email"]) && isset($_POST["post_form_name"])) {
+            $email = $_POST["post_form_email"];
+            $name = $_POST["post_form_name"];
+            register_new_user($name, $email);
+            echo "user created in";
+        }
+
     }
 
 }

@@ -3,7 +3,7 @@
 get_header();
 
 
-var_dump(get_queried_object());
+// var_dump(get_queried_object());
 
 if (is_tax() || is_category()) {
 	$term = get_queried_object();

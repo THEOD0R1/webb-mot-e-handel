@@ -4,8 +4,19 @@
 .is-large .wp-block-woocommerce-checkout-order-summary-block {
   min-width: 290px;
 }
+
+.wc-block-components-sidebar-layout {
+  background-color: rgb(245, 245, 245);
+  padding: 10px;
+  border-radius: 5px;
+  border: solid hsla(0, 0%, 7%, 0.11) 1px;
+}
+
+.wc-block-components-totals-coupon__form {
+  font-size: small;
+}
+
 @media screen and (max-width: 800px) {
   main {
-    background-color: blue;
   }
 }
