@@ -5,8 +5,32 @@ Text Domain:mt
 @import url("styles/header.css");
 @import url("styles/cart.css");
 @import url("styles/checkout.css");
+@import url("styles/createCarCollection.css");
 :root {
   background-color: rgb(255, 255, 255);
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-family: "Roboto Mono", monospace;
+  font-size: 15pt;
+  line-height: 1.8;
+  color: rgb(20, 20, 20);
+  min-width: 320px;
+}
+
+.centered-content {
+  margin: auto;
+  width: 100%;
+  max-width: 800px;
+}
+.menu-line {
+  background-color: #f0f0f0f0;
+  padding: 15px 0px;
+  border-bottom: solid 1px #666666;
 }
 
 body {
@@ -18,7 +42,6 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  min-width: 320px;
 }
 main {
   display: flex;
@@ -27,17 +50,22 @@ main {
   width: 90%;
   align-items: center;
 }
+.wc-block-components-button:hover {
+  background-color: rgb(24 24 255);
+}
 .wc-block-components-button {
-  background-color: darkblue;
+  background-color: rgb(51 51 255);
   color: white;
   border-radius: 10px;
   font-size: larger;
-  border: solid rgb(0, 0, 0) 2px;
+  border: solid rgb(0, 0, 206) 2px;
   text-decoration: none;
+  cursor: pointer;
 }
 .wc-block-components-product-name {
   color: rgb(0, 0, 0);
 }
+
 @media screen and (max-width: 800px) {
   body {
   }

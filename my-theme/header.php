@@ -16,6 +16,7 @@
     </script>
     <!-- End Google Tag Manager  -->
     <?php wp_head(); ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body <?php body_class(); ?>>
@@ -29,21 +30,13 @@
 
     <header>
         <h2>Header</h2>
-        <nav>
-            <section>
-                <div>
-                    <a href="http://localhost:8084/varukorg/">Cart</a>
-                </div>
-                <div>
-                    <a href="http://localhost:8084/butik/">Shop</a>
-                </div>
 
+        <?php wp_nav_menu([
+            "theme_location" => "main-nav",
+            'container' => 'nav',
+            'menu_class' => 'nav-menu',
+        ]) ?>
 
-                <div>
-                    <a href="http://localhost:8084/create-car-collection/">Collections</a>
-                </div>
-            </section>
-        </nav>
     </header>
 
     <main>

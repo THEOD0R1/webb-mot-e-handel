@@ -21,6 +21,10 @@ endif;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
+    if (isset($_POST["test_discount_code"])) {
+        do_action("get_coupon_after_purchase");
+    }
+
     if (isset($_POST["post_select_product"]) && isset($_POST["product_id"])) {
 
         do_action("save_new_collection");
@@ -41,6 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 ?>
 <?php do_action("form_on_page_template") ?>
+
+
+<form method="post">
+    <input type="submit" name="test_discount_code" value="test code">
+</form>
 
 <?php get_footer();
 

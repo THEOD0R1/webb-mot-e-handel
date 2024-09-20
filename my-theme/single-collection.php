@@ -89,9 +89,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         WC()->cart->add_to_cart($product_id, 1, 0, [], ["collection" => get_the_ID()]);
     }
 }
-
-
-
-
-
 get_footer();

@@ -2,14 +2,14 @@
   margin: 50px;
 }
 .is-large .wp-block-woocommerce-checkout-order-summary-block {
-  min-width: 290px;
 }
 
 .wc-block-components-sidebar-layout {
-  background-color: rgb(245, 245, 245);
+  background-color: rgb(250, 250, 250);
   padding: 10px;
-  border-radius: 5px;
-  border: solid hsla(0, 0%, 7%, 0.11) 1px;
+  border-bottom: solid hsla(0, 0%, 7%, 0.11) 1px;
+  border-top: solid hsla(0, 0%, 7%, 0.11) 1px;
+  font-size: medium;
 }
 
 .wc-block-components-totals-coupon__form {

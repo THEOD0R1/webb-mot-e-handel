@@ -29,7 +29,7 @@ function mt_output_form()
 	$products = wc_get_products([]);
 
 	?>
-	<form method="POST">
+	<form class="add_collection_form" method="POST">
 		<input type="hidden" name="post_select_product" value="product_form">
 		<label for="post_form_title">Title</label>
 		<input type="text" name="post_form_title" id="post_form_title" placeholder="Title">
@@ -37,50 +37,42 @@ function mt_output_form()
 		<?php
 		if (!is_user_logged_in() || true) { //Use || true or && false only in testing or 
 			?>
+			<label for="post_form_email">Email</label>
 			<input type="text" name="post_form_email" id="post_form_email" placeholder="Email">
 
 			<label for="post_form_name">Full name</label>
 			<input type="text" name="post_form_name" id="post_form_name" placeholder="Full name">
-			<label for="post_form_email">Email</label>
 			<?php
 		}
 		?>
 
 
-		<section class="collection__product__card">
+		<ul class="collection__product__card">
 			<?php
 			foreach ($products as $product) {
 				$id = $product->get_id();
 				$title = $product->name;
-
 				?>
-				<article>
-
+				<li>
 					<label for="<?php echo $id ?>">
 						<?php echo esc_html($title); ?>
 					</label>
 					<input type="checkbox" name="product_id[]" value="<?php echo $id ?>" id="<?php echo $id ?>">
-				</article>
-
-
-
+				</li>
 				<?php
-
 			}
-
-
 			?>
-		</section>
+		</ul>
 		<label for="post_form_content">Content</label>
+
 		<textarea name="post_form_content" id="post_form_content"></textarea>
 
 		<?php do_action("mp_nonce_form") ?>
 
-		<input type="submit" value="Add Collection">
+		<input class="wc-block-components-button" type="submit" value="Add Collection">
 
 		<?php
 
-		//  wp_nonce_field("new_product_collection") 
 		?>
 	</form>
 	<?php
@@ -93,7 +85,6 @@ function save_collection()
 		if (!isset($_POST['post_select_product'])) {
 			return;
 		}
-
 
 		$post = array(
 			'post_title' => wp_strip_all_tags($_POST['post_form_title']),
@@ -124,10 +115,18 @@ function save_collection()
 
 }
 
+// function register_my_menu()
+// {
+// 	register_nav_menu('main-nav', __('Main Menu', 'your_theme_name'));
+// }
 
+
+// add_action('after_setup_theme', 'register_my_menu');
 
 function my_theme_enqueue_styles()
 {
+	wp_enqueue_style('my_text_font_style', "https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+
 	wp_enqueue_style('my_theme_style', get_stylesheet_uri());
 }
 add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
@@ -144,3 +143,34 @@ function mt_collection_filter($query)
 		}
 	}
 }
+function get_coupon_after_purchase()
+{
+	if (!is_user_logged_in()) {
+		return;
+	}
+	$user_id = get_current_user_id();
+
+	$couponCode = uniqid($user_id);
+
+	$coupon = new WC_Coupon($couponCode);
+
+	$user = new WP_User($user_id);
+
+	$user_email = $user->user_email;
+
+	$coupon->set_discount_type('percent');
+
+	$coupon->set_amount(10);
+
+	$coupon->set_usage_limit(1);
+
+	$coupon->set_email_restrictions(
+		array($user_email)
+	);
+
+	$coupon->save();
+
+	echo "<p class='purchased_coupon_code'>" . $couponCode . "</p>";
+
+}
+add_action("get_coupon_after_purchase", "get_coupon_after_purchase");

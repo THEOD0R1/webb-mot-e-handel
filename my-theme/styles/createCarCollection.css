@@ -1,0 +1,11 @@
+.add_collection_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.add_collection_form > input {
+  padding: 3px 6px;
+  font-size: 1rem;
+}
