@@ -3,7 +3,9 @@
 Template Name: New front
 */
 get_header();
+
 ?>
+
 <div class="menu-line">
     <div class="centered-site"></div>
 </div>

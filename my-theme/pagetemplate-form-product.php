@@ -8,7 +8,8 @@ get_header();
 
 <?php
 
-echo __("This is a form page:", "mt"); //loco translate test
+_e("This is a form page:", "mt"); //loco translate test
+
 if (have_posts()):
     while (have_posts()):
 

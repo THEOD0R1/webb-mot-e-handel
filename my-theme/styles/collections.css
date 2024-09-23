@@ -1,0 +1,77 @@
+.filter_collection_form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.filter_collection_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+}
+.filter_collection_container input {
+  margin: 5px;
+}
+.collection_main_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+.cars_collection_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.car_collections_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.car_collection_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  border: solid gray 2px;
+  text-align: center;
+  text-decoration: none;
+  color: #141414;
+  transition: background-color 250ms;
+  object-fit: fill;
+}
+.car_collection_container:hover {
+  background-color: #3333ff;
+  color: rgb(245, 245, 245);
+}
+.collection__product__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+.collection__product__container__name {
+  color: rgb(20, 20, 20);
+  text-decoration: none;
+}
+.car_collection_image_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.car_collection_image {
+  max-width: 400px;
+  height: 200px;
+  object-fit: cover;
+}
+.car_title {
+  text-align: center;
+}

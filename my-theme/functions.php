@@ -115,14 +115,6 @@ function save_collection()
 
 }
 
-// function register_my_menu()
-// {
-// 	register_nav_menu('main-nav', __('Main Menu', 'your_theme_name'));
-// }
-
-
-// add_action('after_setup_theme', 'register_my_menu');
-
 function my_theme_enqueue_styles()
 {
 	wp_enqueue_style('my_text_font_style', "https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
@@ -134,15 +126,21 @@ add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
 function mt_collection_filter($query)
 {
 	if ($query->is_main_query()) {
-		if (isset($_GET["start_date"]) && !empty($_GET["start_date"])) {
+		if (isset($_GET["start_date"]) && $_GET["start_date"]) {
 			$date_query = [
-				"after" => $_GET["start_date"],
-				"inclusive" => true
+				[
+					"after" => $_GET["start_date"],
+					"inclusive" => true
+				]
 			];
 
+			$query->set("date_query", $date_query);
 		}
 	}
 }
+
+add_action("pre_get_posts", "mt_collection_filter");
+
 function get_coupon_after_purchase()
 {
 	if (!is_user_logged_in()) {
@@ -174,3 +172,14 @@ function get_coupon_after_purchase()
 
 }
 add_action("get_coupon_after_purchase", "get_coupon_after_purchase");
+
+
+
+function mt_theme_setup()
+{
+	load_theme_textdomain('mt', get_template_directory());
+}
+add_action('after_setup_theme', 'mt_theme_setup');
+
+
+

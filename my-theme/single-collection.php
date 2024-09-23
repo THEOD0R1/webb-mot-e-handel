@@ -15,13 +15,15 @@ if (is_user_logged_in()) {
 if (current_user_can("administrator")) {
 
 }
-
+$message = "";
 get_header();
 
 ?>
 
 <div>
-    <a href="<?php echo home_url("/complete-collections"); ?>">Complete collections</a>
+    <h2>
+        <a href="<?php echo home_url("/complete-collections"); ?>">Complete collections</a>
+    </h2>
 </div>
 
 <?php
@@ -32,36 +34,60 @@ if (have_posts()):
 
     while (have_posts()):
         the_post();
-        the_title();
+
+        $products_ids = get_post_meta(get_the_ID(), "secretMessage", true);
+        ?>
+        <section class="collection_title_container">
+            <h3>
+                <?= the_title(); ?>
+            </h3>
+            <p><?php echo $message ?></p>
+            <form method="POST" class="add_cart_icon_form">
+                <label for="mp_add_cart_icon" class="add_cart_icon">
+                    <?php do_action("mp_add_cart_icon"); ?>
+                </label>
+                <input type="submit" id="mp_add_cart_icon" class="add_cart_icon_button" />
+            </form>
+
+        </section>
+
+        <?php
+        ?>
+        <div class="cars_collection_container">
+            <?php
+            if (is_array($products_ids)) {
+                foreach ($products_ids as $product_id) {
+                    $product = wc_get_product($product_id);
+                    $image_id = $product->get_image_id();
+                    $image_url = wp_get_attachment_image_url($image_id, 'full');
+
+
+                    ?>
+                    <div class="collection__product__container">
+                        <a class="collection__product__container__name" href="<?php echo get_permalink($product->get_id()) ?>">
+                            <h4 class="car_title">
+                                <?php echo $product->get_name() ?>
+                            </h4>
+                        </a>
+                        <div class="car_collection_image_container">
+                            <img class="car_collection_image" src="<?= $image_url ?>" alt="<?= $product->get_name() ?> image ">
+                        </div>
+                    </div>
+                    <?php
+                }
+            }
+            ?>
+        </div>
+        <?php
         the_content();
     endwhile;
 
 endif;
-
-$products_ids = get_post_meta(get_the_ID(), "secretMessage", true);
-
-if (is_array($products_ids)) {
-    foreach ($products_ids as $product_id) {
-        $product = wc_get_product($product_id);
-
-
-        ?>
-        <div>
-            <a href="<?php echo get_permalink($product->get_id()) ?>">
-                <?php echo $product->get_name() ?>
-            </a>
-        </div>
-        <?php
-    }
-}
 ?>
-<form method="POST">
-    <input type="submit" value="Add to cart">
-</form>
+
 
 <?php
 
-// $taxonomies = get_object_taxonomies("collection");
 
 $taxonomies = [
     "attribute" => ["label" => "Attribute"],
@@ -85,8 +111,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $products_ids = get_post_meta(get_the_ID(), "secretMessage", true);
 
     foreach ($products_ids as $product_id) {
-        var_dump($product_id);
         WC()->cart->add_to_cart($product_id, 1, 0, [], ["collection" => get_the_ID()]);
     }
+    $message = "Collection added";
 }
 get_footer();

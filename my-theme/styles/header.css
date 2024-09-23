@@ -1,10 +1,14 @@
 header {
+  position: sticky;
+  top: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 100;
+  background-color: rgb(250, 250, 250);
+  width: 100%;
 }
 .nav_bar {
-  background-color: lightgray;
   width: 100%;
 }
 
