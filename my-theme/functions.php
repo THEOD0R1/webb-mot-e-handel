@@ -32,16 +32,16 @@ function mt_output_form()
 	<form class="add_collection_form" method="POST">
 		<input type="hidden" name="post_select_product" value="product_form">
 		<label for="post_form_title">Title</label>
-		<input type="text" name="post_form_title" id="post_form_title" placeholder="Title">
+		<input type="text" name="post_form_title" required id="post_form_title" placeholder="Title">
 
 		<?php
 		if (!is_user_logged_in() || true) { //Use || true or && false only in testing or 
 			?>
 			<label for="post_form_email">Email</label>
-			<input type="text" name="post_form_email" id="post_form_email" placeholder="Email">
+			<input type="text" name="post_form_email" required id="post_form_email" placeholder="Email">
 
 			<label for="post_form_name">Full name</label>
-			<input type="text" name="post_form_name" id="post_form_name" placeholder="Full name">
+			<input type="text" name="post_form_name" required id="post_form_name" placeholder="Full name">
 			<?php
 		}
 		?>
@@ -79,7 +79,15 @@ function mt_output_form()
 }
 
 add_action("save_new_collection", "save_collection");
-function save_collection()
+
+
+function wpb_custom_new_menu()
+{
+	register_nav_menu('main-nav', __('Main menu'));
+}
+add_action('init', 'wpb_custom_new_menu');
+
+function save_collection($userId)
 {
 	if ('POST' == $_SERVER['REQUEST_METHOD']) {
 		if (!isset($_POST['post_select_product'])) {
@@ -91,7 +99,7 @@ function save_collection()
 			"post_content" => wp_strip_all_tags($_POST["post_form_content"]),
 			'post_type' => 'collection',
 			'post_status' => 'publish',
-			"post_author" => get_current_user_id()
+			"post_author" => $userId
 		);
 		$meta_id = wp_insert_post($post);
 
@@ -181,5 +189,30 @@ function mt_theme_setup()
 }
 add_action('after_setup_theme', 'mt_theme_setup');
 
+function add_custom_script()
+{
 
+	wp_enqueue_script('my-custom-script', get_template_directory_uri() . '/js/toggleNavBar.js', array(), true);
+
+}
+
+add_action('wp_enqueue_scripts', 'add_custom_script');
+
+
+add_action('woocommerce_thankyou', 'my_custom_collection_check_on_order', 10, 1);
+
+function my_custom_collection_check_on_order($order_id)
+{
+	$cart_items = WC()->cart->get_cart();
+
+	// var_dump($order);
+	foreach ($cart_items as $item_id => $item) {
+
+
+		$custom_data = isset($item['collection_id']) ? $item['collection_id'] : '';
+
+		var_dump($custom_data);
+
+	}
+}
 

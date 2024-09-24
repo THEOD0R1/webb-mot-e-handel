@@ -28,17 +28,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (isset($_POST["post_select_product"]) && isset($_POST["product_id"])) {
 
-        do_action("save_new_collection");
-
-        do_action("mp_valid_nonce", );
-
-
-        if (!is_user_logged_in() && isset($_POST["post_form_email"]) && isset($_POST["post_form_name"])) {
+        if (!is_user_logged_in() && isset($_POST["post_form_email"]) && isset($_POST["post_form_name"])) {  //|| true on debug
             $email = $_POST["post_form_email"];
             $name = $_POST["post_form_name"];
-            register_new_user($name, $email);
-            echo "user created in";
+
+            $new_User_ID = register_new_user($name, $email);
+
+            // var_dump($new_User_ID);
+            // $post_id = wp_insert_post($args);
+
+            if (!is_wp_error($new_User_ID)) {
+
+                do_action("save_new_collection", $new_User_ID);
+
+                echo "user created";
+
+            } else {
+
+                echo $new_User_ID->get_error_message();
+
+            }
+
+        } else {
+
+            do_action("mp_valid_nonce");
+            do_action("save_new_collection", get_current_user_id());
+
+
         }
+
+
+
+
 
     }
 

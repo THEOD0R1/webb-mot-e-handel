@@ -36,6 +36,9 @@
             'container' => 'nav',
             'menu_class' => 'nav-menu',
         ]) ?>
+        <button onclick="toggleNavBar()">
+            toggle
+        </button>
 
     </header>
 
