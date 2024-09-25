@@ -13,8 +13,8 @@
 }
 .input_container > input,
 label {
-  padding: 3px 6px;
-  font-size: 1.8rem;
+  padding: 5px 10px;
+  font-size: 1.5rem;
 }
 
 .collection__product__card {
