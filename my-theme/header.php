@@ -29,8 +29,7 @@
     <?php wp_body_open(); ?>
 
     <header>
-        <h2>Header</h2>
-
+        <h2>Car Supshop</h2>
         <?php wp_nav_menu([
             "theme_location" => "main-nav",
             'container' => 'nav',

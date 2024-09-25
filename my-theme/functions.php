@@ -31,45 +31,63 @@ function mt_output_form()
 	?>
 	<form class="add_collection_form" method="POST">
 		<input type="hidden" name="post_select_product" value="product_form">
-		<label for="post_form_title">Title</label>
-		<input type="text" name="post_form_title" required id="post_form_title" placeholder="Title">
+		<section class="add_collection_information_container">
 
-		<?php
-		if (!is_user_logged_in() || true) { //Use || true or && false only in testing or 
-			?>
-			<label for="post_form_email">Email</label>
-			<input type="text" name="post_form_email" required id="post_form_email" placeholder="Email">
+			<div class="input_container">
+				<label for="post_form_title">Title</label>
+				<input type="text" name="post_form_title" required id="post_form_title" placeholder="Title">
+			</div>
 
-			<label for="post_form_name">Full name</label>
-			<input type="text" name="post_form_name" required id="post_form_name" placeholder="Full name">
 			<?php
-		}
-		?>
+			if (!is_user_logged_in() || true) { //Use || true or && false only in testing or 
+				?>
+				<div class="input_container">
+					<label for="post_form_email">Email</label>
+					<input type="text" name="post_form_email" required id="post_form_email" placeholder="Email">
+				</div>
 
+				<div class="input_container">
+					<label for="post_form_name">Name</label>
+					<input type="text" name="post_form_name" required id="post_form_name" placeholder="Full name">
+				</div>
+
+				<?php
+			}
+			?>
+		</section>
 
 		<ul class="collection__product__card">
 			<?php
 			foreach ($products as $product) {
 				$id = $product->get_id();
 				$title = $product->name;
+				$image = wp_get_attachment_url($product->get_image_id());
 				?>
 				<li>
-					<label for="<?php echo $id ?>">
-						<?php echo esc_html($title); ?>
+
+					<label id="<?php echo $id . 'create_collection_car_label'; ?>" class="create_collection_car_label"
+						for="<?php echo $id . 'create_collection_car_checkbox' ?>"
+						onclick="toggleProduct('<?php echo $id . 'create_collection_car_label' ?>','<?php echo $id . 'create_collection_car_checkbox' ?>')">
+
+						<p>
+							<?php echo esc_html($title); ?>
+						</p>
+						<img src="<?= $image ?>" alt="<?= $title ?>" class="car_collection_image">
 					</label>
-					<input type="checkbox" name="product_id[]" value="<?php echo $id ?>" id="<?php echo $id ?>">
+					<input class="create_collection_car_checkbox" type="checkbox" name="product_id[]" value="<?php echo $id ?>"
+						id="<?php echo $id . 'create_collection_car_checkbox' ?>">
 				</li>
 				<?php
 			}
 			?>
 		</ul>
-		<label for="post_form_content">Content</label>
+		<label for="post_form_content">Collection description</label>
 
 		<textarea name="post_form_content" id="post_form_content"></textarea>
 
 		<?php do_action("mp_nonce_form") ?>
 
-		<input class="wc-block-components-button" type="submit" value="Add Collection">
+		<input class="add_collection_submit_button" type="submit" value="Add Collection">
 
 		<?php
 
@@ -192,7 +210,9 @@ add_action('after_setup_theme', 'mt_theme_setup');
 function add_custom_script()
 {
 
-	wp_enqueue_script('my-custom-script', get_template_directory_uri() . '/js/toggleNavBar.js', array(), true);
+	wp_enqueue_script('my-custom-script', get_template_directory_uri() . '/js/toggleClasses.js', array(), true);
+	// wp_enqueue_script_module('my-custom-script', get_theme_file_uri('/js/main.js'));
+
 
 }
 
