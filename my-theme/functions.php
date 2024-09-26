@@ -1,8 +1,4 @@
 <?php
-
-
-
-
 function mt_register_collection_post_type()
 {
 	$args = [
@@ -24,7 +20,6 @@ add_action("form_on_page_template", "mt_output_form", 10);
 
 function mt_output_form()
 {
-
 
 	$products = wc_get_products([]);
 
@@ -56,6 +51,9 @@ function mt_output_form()
 			?>
 		</section>
 
+		<span class="collection__product__card__title">
+			Select cars for your collection
+		</span>
 		<ul class="collection__product__card">
 			<?php
 			foreach ($products as $product) {
@@ -96,7 +94,6 @@ function mt_output_form()
 	<?php
 }
 
-add_action("save_new_collection", "save_collection");
 
 
 function wpb_custom_new_menu()
@@ -105,19 +102,20 @@ function wpb_custom_new_menu()
 }
 add_action('init', 'wpb_custom_new_menu');
 
+add_action("save_new_collection", "save_collection");
+
 function save_collection($userId)
 {
 	if ('POST' == $_SERVER['REQUEST_METHOD']) {
 		if (!isset($_POST['post_select_product'])) {
 			return;
 		}
-
 		$post = array(
 			'post_title' => wp_strip_all_tags($_POST['post_form_title']),
 			"post_content" => wp_strip_all_tags($_POST["post_form_content"]),
 			'post_type' => 'collection',
 			'post_status' => 'publish',
-			"post_author" => $userId
+			"post_author" => $userId[0]
 		);
 		$meta_id = wp_insert_post($post);
 
@@ -219,20 +217,33 @@ function add_custom_script()
 add_action('wp_enqueue_scripts', 'add_custom_script');
 
 
+add_action('woocommerce_checkout_create_order_line_item', 'mt_transfer_cart_item_meta_to_order', 10, 4);
+
+function mt_transfer_cart_item_meta_to_order($item, $cart_item_key, $values, $order)
+{
+	if (isset($values['collection_id'])) {
+		$item->add_meta_data('collection_id', $values['collection_id'], true);
+	}
+}
+
+
 add_action('woocommerce_thankyou', 'my_custom_collection_check_on_order', 10, 1);
 
 function my_custom_collection_check_on_order($order_id)
 {
-	$cart_items = WC()->cart->get_cart();
-
-	// var_dump($order);
-	foreach ($cart_items as $item_id => $item) {
 
 
-		$custom_data = isset($item['collection_id']) ? $item['collection_id'] : '';
+	$order = wc_get_order($order_id);
 
-		var_dump($custom_data);
+	$collection_id = $order->get_meta('collection_id');
 
+	foreach ($order->get_items() as $item) {
+		$collection_id = $item->get_meta('collection_id');
+		if ($collection_id) {
+
+			$collection_info = get_post($collection_id);
+			$user_data = get_user_by("id", $collection_info->post_author);
+			var_dump($user_data->user_email);
+		}
 	}
 }
-

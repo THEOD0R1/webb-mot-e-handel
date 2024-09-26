@@ -8,4 +8,8 @@ const toggleProduct = (labelElementId, checkboxElementId) => {
   }
 };
 
-function toggleNavBar() {}
+function toggleNavBar(elementId) {
+  const navMenu = document.getElementById(elementId);
+
+  navMenu.classList.toggle("car_supshop_nav_menu_open");
+}

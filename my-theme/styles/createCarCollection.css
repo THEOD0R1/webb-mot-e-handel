@@ -10,11 +10,12 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  margin-bottom: 50px;
 }
 .input_container > input,
 label {
   padding: 5px 10px;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
 .collection__product__card {
@@ -22,6 +23,9 @@ label {
   justify-content: center;
   flex-wrap: wrap;
   list-style: none;
+  margin-bottom: 70px;
+  border-top: solid 3px #4b4bff89;
+  border-bottom: solid 3px #4b4bff89;
 }
 .collection__product__card li {
   margin: 5px;
@@ -48,15 +52,18 @@ label {
   align-items: center;
   overflow: hidden;
   padding: 5px;
+  transition: box-shadow 200ms linear;
 }
-
+.create_collection_car_label:hover {
+  box-shadow: 0 6px 20px 0 #4b4bff89;
+}
 .create_collection_car_label p {
   text-align: center;
   margin-top: 5px;
 }
 
 .selected_product img {
-  border: solid 6px #b4b4ff;
+  border: solid 6px #4b4bffc6;
   border-radius: 5px;
   max-width: 100%;
 }
@@ -73,7 +80,6 @@ label {
   min-width: 300px;
   width: 80%;
   resize: none;
-
   border: 2px solid #212121;
   height: 300px;
   padding: 12px 20px;
@@ -87,7 +93,13 @@ label {
   font-size: 1.8rem;
   color: rgb(29, 29, 29);
   cursor: pointer;
-  transition: background-color linear 200ms, color linear 200ms;
+  transition: background-color linear 200ms;
   color: rgb(255, 255, 255);
   border: solid #6161ff 2px;
+}
+.add_collection_submit_button:hover {
+  background-color: #6969ffe3;
+}
+.collection__product__card__title {
+  font-size: 1.4rem;
 }

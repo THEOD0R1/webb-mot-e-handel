@@ -29,16 +29,17 @@
     <?php wp_body_open(); ?>
 
     <header>
-        <h2>Car Supshop</h2>
+        <!-- <h2>Car Supshop</h2>
+
+        <button onclick="toggleNavBar('menu_main_id')">
+            toggle
+        </button> -->
         <?php wp_nav_menu([
             "theme_location" => "main-nav",
             'container' => 'nav',
             'menu_class' => 'nav-menu',
+            "menu_id" => "menu_main_id"
         ]) ?>
-        <button onclick="toggleNavBar()">
-            toggle
-        </button>
-
     </header>
 
     <main>

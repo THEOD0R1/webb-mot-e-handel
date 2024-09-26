@@ -110,37 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     foreach ($products_ids as $product_id) {
         WC()->cart->add_to_cart($product_id, 1, 0, [], ["collection_id" => get_the_ID()]);
-
-
     }
-    var_dump($_POST);
 
 }
-function display_cart_item_data()
-{
-    // Get all cart items
-    $cart_items = WC()->cart->get_cart();
-
-    // Loop through the cart items
-    foreach ($cart_items as $cart_item_key => $cart_item) {
-        // Get the product ID
-        $product_id = $cart_item['product_id'];
-
-        // Get the quantity
-        $quantity = $cart_item['quantity'];
-
-        // Get the cart item data
-        $cart_item_data = $cart_item['data'];
-
-        // Custom cart item data you added
-        $custom_data = isset($cart_item['collection_id']) ? $cart_item['collection_id'] : '';
-
-        // Display the product ID, quantity, and custom data
-        echo 'Product ID: ' . esc_html($product_id) . '<br>';
-        echo 'Quantity: ' . esc_html($quantity) . '<br>';
-        echo 'Collection ID: ' . esc_html($custom_data) . '<br>';
-        echo '<hr>';
-    }
-}
-display_cart_item_data();
 get_footer();

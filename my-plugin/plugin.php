@@ -3,54 +3,14 @@
  * Plugin Name: test-plugin
  **/
 
-function mp_test($messageCount)
-{
-    ?>
-    <div><?= $messageCount ?></div>
-    <?php
-}
+// add_filter("the_content", function ($content) {
 
+//     if (is_user_logged_in()) {
+//         return $content;
+//     }
 
-add_action("before_form_on_page_template", "mp_test", 20);
-// add_action("before_form_on_page_template", "\MYClass::test"); vg
-
-
-add_action("before_form_on_page_template", function () {
-    ?>anonym
-    <?php
-}, 10);
-
-// add_action("before_form_on_page_template", [$object, "test"]);
-
-// function mt_init()
-// {
-//     remove_action("form_on_page_template", "mt_output_form", 10);
-// }
-
-// add_action("init", "mt_init"); //körs när alla plugin och temman är redo 
-
-
-
-
-function mp_reverse($messages, $post_id)
-{
-    var_dump($messages);
-    var_dump($post_id);
-
-    return array_reverse($messages);
-
-}
-
-add_filter("secret_messages", "mp_secret_messages", 10, 2);
-
-add_filter("the_content", function ($content) {
-
-    if (is_user_logged_in()) {
-        return $content;
-    }
-
-    return null;
-});
+//     return null;
+// });
 
 
 function create_occasion_taxonomy()
@@ -107,7 +67,7 @@ add_filter("mp_get_latest_collection", "mp_get_latest_collection");
 
 function mp_latest_collection($atts)
 {
-    $return_html = "<h2>Senaste kollektioner</h2>";
+    $return_html = "<h2>Latest Collection</h2>";
 
 
     add_filter("mp_get_latest_collection_query_args", function ($args) {
@@ -142,7 +102,7 @@ add_shortcode("latestCollections", "mp_latest_collection");
 
 add_filter("wp_is_application_passwords_available", "__return_true"); //lägga till test användare
 
-function mp_nonce($accept_action)
+function mp_nonce($hookName, ...$arg)
 {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -156,21 +116,18 @@ function mp_nonce($accept_action)
 
         if ($valid_nonce === $nonce) {
 
-            // $stale_nonce = $_POST["stale_nonce"];
-            // $saved_stale_nonce = wp_create_nonce(get_the_content());
-
-            // $current_date = date("Y-m-d h:i:s");
             $current_time = time();
 
-
             $plus_in_10_minutes = $current_time - (10 * 60);
-            $plus10 = date("Y-m-d h:i:s", $plus_in_10_minutes);
 
-            // var_dump($current_time, $plus10, $date);
+            $plus10 = date("Y-m-d h:i:s", $plus_in_10_minutes);
 
             if ($plus10 < $date) {
 
-                $accept_action;
+
+                $arg ? do_action($hookName, $arg) : do_action($hookName);
+
+                echo "success";
 
             } else {
 
@@ -182,11 +139,10 @@ function mp_nonce($accept_action)
 
     }
 
-
-
 }
 
-add_action("mp_valid_nonce", "mp_nonce");
+add_action("mp_valid_nonce", "mp_nonce", 10, 10);
+
 
 
 function mp_nonce_form()
