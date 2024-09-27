@@ -7,12 +7,8 @@ get_header();
 ?>
 
 <?php
-
-_e("This is a form page:", "mt");
-
 if (have_posts()):
     while (have_posts()):
-
         the_post();
 
     endwhile;

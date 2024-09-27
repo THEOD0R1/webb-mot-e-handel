@@ -13,8 +13,3 @@
 .wc-block-components-totals-coupon__form {
   font-size: small;
 }
-
-@media screen and (max-width: 800px) {
-  main {
-  }
-}

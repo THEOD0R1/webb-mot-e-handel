@@ -11,7 +11,7 @@ function mt_register_collection_post_type()
 
 	];
 
-	register_post_type("collection", $args);//same name as the php file ex. single-collection.php
+	register_post_type("collection", $args);
 }
 add_action("init", "mt_register_collection_post_type");
 
@@ -233,8 +233,6 @@ function add_custom_script()
 {
 
 	wp_enqueue_script('my-custom-script', get_template_directory_uri() . '/js/toggleClasses.js', array(), true);
-	// wp_enqueue_script_module('my-custom-script', get_theme_file_uri('/js/main.js'));
-
 
 }
 
