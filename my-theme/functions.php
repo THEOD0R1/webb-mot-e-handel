@@ -34,7 +34,7 @@ function mt_output_form()
 			</div>
 
 			<?php
-			if (!is_user_logged_in() || true) { //Use || true or && false only in testing or 
+			if (!is_user_logged_in()) { //Use || true or && false only in testing or 
 				?>
 				<div class="input_container">
 					<label for="post_form_email">Email</label>
@@ -83,13 +83,10 @@ function mt_output_form()
 
 		<textarea name="post_form_content" id="post_form_content"></textarea>
 
-		<?php do_action("mp_nonce_form") ?>
+		<?php do_action("mp_nonce_form", "new_collection_action") ?>
 
 		<input class="add_collection_submit_button" type="submit" value="Add Collection">
 
-		<?php
-
-		?>
 	</form>
 	<?php
 }
@@ -150,29 +147,57 @@ add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
 function mt_collection_filter($query)
 {
 	if ($query->is_main_query()) {
-		if (isset($_GET["start_date"]) && $_GET["start_date"]) {
+		if ((isset($_GET["start_date"]) && $_GET["start_date"]) && (isset($_GET["end_date"]) && $_GET["end_date"])) {
+			$filtered_start_date = filter_var($_GET["start_date"], FILTER_SANITIZE_STRING);
+			$filtered_end_date = filter_var($_GET["end_date"], FILTER_SANITIZE_STRING);
 			$date_query = [
 				[
-					"after" => $_GET["start_date"],
-					"inclusive" => true
+					"after" => $filtered_start_date,
+					"before" => $filtered_end_date,
+					"inclusive" => true,
 				]
 			];
 
 			$query->set("date_query", $date_query);
+			return;
+		}
+		if ((isset($_GET["start_date"]) && $_GET["start_date"])) {
+			$filtered_start_date = filter_var($_GET["start_date"], FILTER_SANITIZE_STRING);
+
+			$date_query = [
+				[
+					"after" => $filtered_start_date,
+					"inclusive" => true,
+				]
+			];
+
+			$query->set("date_query", $date_query);
+			return;
+		}
+		if ((isset($_GET["end_date"]) && $_GET["end_date"])) {
+			$filtered_end_date = filter_var($_GET["end_date"], FILTER_SANITIZE_STRING);
+
+			$date_query = [
+				[
+					"before" => $filtered_end_date,
+					"inclusive" => true,
+				]
+			];
+
+			$query->set("date_query", $date_query);
+			return;
 		}
 	}
 }
 
 add_action("pre_get_posts", "mt_collection_filter");
 
-function get_coupon_after_purchase()
+function get_coupon_after_purchase($user_id)
 {
-	if (!is_user_logged_in()) {
-		return;
-	}
-	$user_id = get_current_user_id();
 
-	$couponCode = uniqid($user_id);
+	$coupon_user_id = $user_id;
+
+	$couponCode = uniqid($coupon_user_id);
 
 	$coupon = new WC_Coupon($couponCode);
 
@@ -192,10 +217,9 @@ function get_coupon_after_purchase()
 
 	$coupon->save();
 
-	echo "<p class='purchased_coupon_code'>" . $couponCode . "</p>";
+	return "<b class='purchased_coupon_code'>" . $couponCode . "</b>";
 
 }
-add_action("get_coupon_after_purchase", "get_coupon_after_purchase");
 
 
 
@@ -225,7 +249,9 @@ function mt_transfer_cart_item_meta_to_order($item, $cart_item_key, $values, $or
 		$item->add_meta_data('collection_id', $values['collection_id'], true);
 	}
 }
-
+add_filter('wp_mail_content_type', function ($content_type) {
+	return 'text/html';
+});
 
 add_action('woocommerce_thankyou', 'my_custom_collection_check_on_order', 10, 1);
 
@@ -237,13 +263,41 @@ function my_custom_collection_check_on_order($order_id)
 
 	$collection_id = $order->get_meta('collection_id');
 
+	$collection_id_list = [];
+
+	$meta_value = hash("sha256", $order_id . $order->data["billing"]["email"]);
+
+	$run_only_once = get_metadata("comment", $order_id, "run_only_once", true);
+
+
+	if ($run_only_once === $meta_value) {
+		return;
+	}
 	foreach ($order->get_items() as $item) {
+
 		$collection_id = $item->get_meta('collection_id');
-		if ($collection_id) {
+
+
+		if ($collection_id && !in_array($collection_id, $collection_id_list)) {
+
+			$collection_id_list[] = $collection_id;
 
 			$collection_info = get_post($collection_id);
+			$collection_name = $collection_info->post_name;
 			$user_data = get_user_by("id", $collection_info->post_author);
-			var_dump($user_data->user_email);
+			$user_id = $user_data->ID;
+			$user_email = $user_data->user_email;
+			$subject = 'Some one bought your collection!';
+			$body = "<section>
+						<span>You received a 10&#37; of coupon from <a href='" . get_site_url(null, "/") . "'>Car Supshop</a>
+			  because someone bought your collection " . $collection_name . "</span> 
+						<span>Here is your coupon code:</span> " . get_coupon_after_purchase($user_id) . "
+					</section>";
+
+			$email = wp_mail($user_email, $subject, $body);
+
 		}
+		add_metadata("comment", $order_id, "run_only_once", $meta_value);
 	}
+
 }

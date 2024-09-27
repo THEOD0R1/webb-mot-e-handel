@@ -3,14 +3,6 @@
  * Plugin Name: test-plugin
  **/
 
-// add_filter("the_content", function ($content) {
-
-//     if (is_user_logged_in()) {
-//         return $content;
-//     }
-
-//     return null;
-// });
 
 
 function create_occasion_taxonomy()
@@ -107,7 +99,6 @@ function mp_nonce($hookName, ...$arg)
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $action = $_POST["action"];
-        // $action = "jfkl";
         $id = $_POST["id"];
         $date = $_POST["date"];
         $nonce = $_POST["nonce"];
@@ -124,17 +115,14 @@ function mp_nonce($hookName, ...$arg)
 
             if ($plus10 < $date) {
 
-
                 $arg ? do_action($hookName, $arg) : do_action($hookName);
-
-                echo "success";
 
             } else {
 
-                echo "Too late";
+                echo "You took to long";
             }
         } else {
-            echo "Wrong nonce"; // only in test
+            echo "Something went wrong";
         }
 
     }
@@ -145,17 +133,17 @@ add_action("mp_valid_nonce", "mp_nonce", 10, 10);
 
 
 
-function mp_nonce_form()
+function mp_nonce_form($action)
 {
 
-    $action = "new_collection_save";
+    $new_action = $action;
     $post_id = get_the_ID();
     $date = date("Y-m-d h:i:s");
-    $nonce = wp_create_nonce($action . "|" . $post_id . "|" . $date);
+    $nonce = wp_create_nonce($new_action . "|" . $post_id . "|" . $date);
     $stale_nonce = wp_create_nonce(get_the_content());
     ?>
 
-    <input type="hidden" name="action" value="<?php echo $action ?>">
+    <input type="hidden" name="action" value="<?php echo $new_action ?>">
     <input type="hidden" name="id" value="<?php echo $post_id ?>">
     <input type="hidden" name="date" value="<?php echo $date ?>">
     <input type="hidden" name="nonce" value="<?php echo $nonce ?>">
@@ -235,3 +223,84 @@ function mp_filter_icon()
     <?php
 }
 add_action("mp_filter_icon", "mp_filter_icon");
+
+function mp_hamburger_menu()
+{
+    ?>
+
+    <svg width="70px" height="70px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g id="SVGRepo_iconCarrier">
+            <g clip-path="url(#clip0_429_11066)">
+                <path d="M3 6.00092H21M3 12.0009H21M3 18.0009H21" stroke="#3333ff" stroke-width="3.5" stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+            </g>
+            <defs>
+                <clipPath id="clip0_429_11066">
+                    <rect width="24" height="24" fill="white" transform="translate(0 0.000915527)"></rect>
+                </clipPath>
+            </defs>
+        </g>
+    </svg>
+    <?php
+}
+add_action("mp_hamburger_menu", "mp_hamburger_menu");
+
+function mp_get_products_for_home($product_limit)
+{
+    $args = [
+        "limit" => $product_limit
+    ];
+    $products = wc_get_products($args);
+    ?>
+    <ul class="collection__product__card">
+        <?php
+        foreach ($products as $product) {
+            $id = $product->get_id();
+            $title = $product->name;
+            $image = wp_get_attachment_url($product->get_image_id());
+            ?>
+            <li>
+                <a href="<?php echo get_permalink($id) ?>" class="collection__product__li">
+                    <div class="collection__product__li_image_container">
+                        <img src="<?php echo esc_html($image) ?>" alt="<?php echo esc_html($title) ?>"
+                            class="collection__product__li__image">
+                    </div>
+
+                    <h2 class="collection__product__title">
+                        <?php echo esc_html($title); ?>
+                    </h2>
+                    <span class="collection__product__price">
+                        <?php echo esc_html($product->price); ?> kr
+                    </span>
+                    <form method="post">
+
+                        <?php do_action("mp_nonce_form", "add_product_to_cart"); ?>
+
+                        <input type="hidden" value="<?php echo $id ?>" name="add_to_cart">
+                        <input type="submit" value="Add to cart" class="home_add_to_cart_button">
+                    </form>
+                </a>
+            </li>
+
+
+            <?php
+        }
+        ?>
+    </ul>
+    <?php
+}
+add_action("mp_get_products", "mp_get_products_for_home");
+
+
+function mp_add_product_to_cart()
+{
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["add_to_cart"])) {
+        $product_id = $_POST["add_to_cart"];
+        WC()->cart->add_to_cart($product_id, 1);
+        echo "Car added";
+    }
+}
+
+add_action("mp_add_product_to_cart", "mp_add_product_to_cart");

@@ -8,7 +8,7 @@ get_header();
 
 <?php
 
-_e("This is a form page:", "mt"); //loco translate test
+_e("This is a form page:", "mt");
 
 if (have_posts()):
     while (have_posts()):
@@ -21,10 +21,6 @@ endif;
 
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
-    if (isset($_POST["test_discount_code"])) {
-        do_action("get_coupon_after_purchase");
-    }
 
     if (isset($_POST["post_select_product"]) && isset($_POST["product_id"])) {
 
@@ -56,11 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 ?>
 <?php do_action("form_on_page_template") ?>
-
-
-<form method="post">
-    <input type="submit" name="test_discount_code" value="test code">
-</form>
 
 <?php get_footer();
 

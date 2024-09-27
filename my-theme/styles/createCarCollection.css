@@ -16,6 +16,17 @@
 label {
   padding: 5px 10px;
   font-size: 1.4rem;
+  transition: box-shadow 100ms linear, border 100ms linear;
+}
+.input_container > input {
+  border: solid 2px #9e9eff;
+  border-radius: 3px;
+}
+.input_container > input:hover,
+.input_container > input:focus {
+  box-shadow: 0 3px 20px 0 #4b4bff89;
+  border-color: #9e9eff;
+  outline-color: #4b4bff;
 }
 
 .collection__product__card {
@@ -26,6 +37,8 @@ label {
   margin-bottom: 70px;
   border-top: solid 3px #4b4bff89;
   border-bottom: solid 3px #4b4bff89;
+  padding-bottom: 100px;
+  padding-top: 100px;
 }
 .collection__product__card li {
   margin: 5px;
@@ -52,7 +65,7 @@ label {
   align-items: center;
   overflow: hidden;
   padding: 5px;
-  transition: box-shadow 200ms linear;
+  transition: box-shadow 100ms linear;
 }
 .create_collection_car_label:hover {
   box-shadow: 0 6px 20px 0 #4b4bff89;
@@ -70,8 +83,6 @@ label {
 .selected_product p {
   text-decoration: underline;
   font-weight: 700;
-  /* font-size: 17pt; */
-  /* margin: 17px; */
   margin-top: 5px;
 }
 
@@ -80,11 +91,19 @@ label {
   min-width: 300px;
   width: 80%;
   resize: none;
-  border: 2px solid #212121;
+  border: 2px solid #4b4bff;
   height: 300px;
+  border-radius: 3px;
   padding: 12px 20px;
+  transition: box-shadow 100ms linear;
   font-size: 20pt;
 }
+#post_form_content:hover,
+#post_form_content:focus-visible {
+  box-shadow: 0 6px 20px 0 #4b4bff89;
+  outline-color: #4b4bff;
+}
+
 .add_collection_submit_button {
   margin: 5px;
   margin-top: 40px;

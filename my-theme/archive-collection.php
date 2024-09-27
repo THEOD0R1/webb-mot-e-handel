@@ -6,13 +6,12 @@ get_header();
 
     <form method="GET" class="filter_collection_form">
         <div class="filter_collection_container">
-            <label for="start_date">Start date</label>
+            <label for="start_date">From</label>
             <input type="date" name="start_date" id="start_date">
         </div>
         <div class="filter_collection_container">
-            <label for="end_date">End date</label>
+            <label for="end_date">To</label>
             <input type="date" name="end_date" id="end_date">
-
         </div>
 
         <input type="submit" value="Add filter">

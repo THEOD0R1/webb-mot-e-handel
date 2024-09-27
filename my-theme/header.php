@@ -29,11 +29,10 @@
     <?php wp_body_open(); ?>
 
     <header>
-        <!-- <h2>Car Supshop</h2>
+        <button class="hamburger" onclick="toggleNavBar('menu_main_id')">
+            <?php do_action("mp_hamburger_menu") ?>
+        </button>
 
-        <button onclick="toggleNavBar('menu_main_id')">
-            toggle
-        </button> -->
         <?php wp_nav_menu([
             "theme_location" => "main-nav",
             'container' => 'nav',
